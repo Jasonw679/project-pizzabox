@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
+using PizzaBox.Domain.Abstracts;
+using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Client
 {
@@ -7,7 +9,7 @@ namespace PizzaBox.Client
     {
         private static void Main()
         {
-            var stores = new List<Store>{ new Store("Round Table"), new Store("Little Cezer")};
+            var stores = new List<AStore>{ new JayPizza(), new Pizzaria()};
             Console.WriteLine("--Stores--");
             for(var x = 0; x < stores.Count; x += 1)
             {
