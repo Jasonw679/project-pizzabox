@@ -1,26 +1,23 @@
+using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
+using System.Collections.Generic;
 using Xunit;
 
 namespace PizzaBox.Testing.Tests
 {
     public class StoreTests
     {
-        [Fact]
-        public void Test_JayPizza()
+        public static IEnumerable<object[]> values = new List<object[]>()
         {
-            var sut = new JayPizza();
-
-            Assert.True(sut.Name.Equals("Jay Pizza"));
-            Assert.True(sut.Name.Equals(sut));
-        }
-
-        [Fact]
-        public void Test_Pizzaria()
+            new object[] { new JayPizza() }, 
+            new object[] { new Pizzaria() }
+        };
+        [Theory]
+        [MemberData(nameof(values))]
+        public void Test_StoreName(AStore store)
         {
-            var sut = new Pizzaria();
-
-            Assert.True(sut.Name.Equals("Pizzaria"));
-            Assert.True(sut.Name.Equals(sut));
+        Assert.NotNull(store.Name);
+        Assert.Equal(store.Name, store.ToString());
         }
-    }
+    } 
 }
