@@ -14,7 +14,8 @@ namespace PizzaBox.Storing
         var reader = new StreamReader(path);
         var xml = new XmlSerializer(typeof(T));
 
-        return xml.Deserialize(reader) as T;
+        var results = xml.Deserialize(reader) as T;
+        return results;
       }
       catch
       {

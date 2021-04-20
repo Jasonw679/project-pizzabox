@@ -10,6 +10,7 @@ namespace PizzaBox.Client
   {
     private static readonly StoreSingleton _storeSingleton = StoreSingleton.Instance;
     private static readonly PizzaSingleton _pizzaSingleton = PizzaSingleton.Instance;
+    private static readonly CrustSingleton _crustSigleton = CrustSingleton.Instance;
     private static void Main()
     {
       Run();
@@ -20,12 +21,16 @@ namespace PizzaBox.Client
       var ps = PizzaSingleton.Instance;
       Console.WriteLine("Welcome to Pizza Box");
       placeOrder();
-      string input;
+      var input = "";
       do
       {
+        Console.WriteLine("Would you like to make a new order?");
         input = Console.ReadLine();
-      }
-      while (input.Equals("Y") || input.Equals("N"));
+        if (input.Equals("Y"))
+        {
+          placeOrder();
+        }
+      } while (input.Equals("N"));
     }
     private static void placeOrder()
     {
@@ -35,21 +40,9 @@ namespace PizzaBox.Client
       order.customer = new Customer();
       order.store = selectStore();
 
-      Console.WriteLine("0 Preset Pizza\n 1 Custom Pizza");
-      var entry = int.Parse(Console.ReadLine());
-
-      switch (entry)
-      {
-        case 0:
-          PrintPizzaList();
-          order.pizzas.Add(selectPizza());
-          break;
-        case 1:
-          order.pizzas.Add(new CustomPizza());
-          break;
-      }
+      PrintPizzaList();
+      order.pizzas.Add(selectPizza());
       viewOrder(order);
-      Console.WriteLine("Do you want to modify your order Y/N");
     }
     private static void printStoreList()
     {
@@ -73,15 +66,71 @@ namespace PizzaBox.Client
         Console.WriteLine($"{x} {_pizzaSingleton.Pizzas[x]}");
       }
     }
+    private static void PrintCrustList()
+    {
+      for (var i = 1; i < _crustSigleton.Crusts.Count; i++)
+      {
+        System.Console.WriteLine($"{i} {_crustSigleton.Crusts[i]}");
+      }
+    }
     private static APizza selectPizza()
     {
       Console.WriteLine("--Choose a pizza--");
-      int entry = int.Parse(Console.ReadLine());
+      var entry = int.Parse(Console.ReadLine());
       return _pizzaSingleton.Pizzas[entry];
+    }
+    private static void AddPizza(Order o)
+    {
+      Console.WriteLine("0 Present Pizza\n1 Custom Pizza");
+      var entry = int.Parse(Console.ReadLine());
+      switch (entry)
+      {
+        case 1:
+          PrintPizzaList();
+          o.pizzas.Add(selectPizza());
+          break;
+        case 2:
+
+          o.pizzas.Add(new CustomPizza());
+          break;
+      }
+    }
+    private static void RemovePizza(Order o)
+    {
+      Console.WriteLine("Which Pizza to Remove");
+      o.PrintOrderedPizzas();
+      var entry = int.Parse(Console.ReadLine());
+      o.pizzas.RemoveAt(entry);
     }
     private static void viewOrder(Order o)
     {
       Console.WriteLine($"Review your order\n {o}");
+      var input = "";
+      do
+      {
+        Console.WriteLine("Do you want to add another pizza Y/N");
+        input = Console.ReadLine();
+        if (input.Equals("Y"))
+        {
+          Console.WriteLine("Do you want to 'add' or 'remove pizza'");
+          var input2 = Console.ReadLine();
+          switch (input2)
+          {
+            case "add":
+              AddPizza(o);
+              break;
+            case "remove":
+              RemovePizza(o);
+              break;
+          }
+        }
+      } while (input.Equals("N") || o.pizzas.Count >= 50);
+      CheckoutOrder(o);
+    }
+    private static void CheckoutOrder(Order o)
+    {
+      Console.WriteLine($"Checkout your order\n {o}");
+      o.customer.orders.Add(o);
     }
   }
 }
