@@ -3,7 +3,7 @@ using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Domain.Abstracts
 {
-  public class Customer
+  public class Customer : AModel
   {
     public string Name { get; protected set; }
     public List<Order> orders = new List<Order>();

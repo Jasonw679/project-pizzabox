@@ -5,17 +5,18 @@ namespace PizzaBox.Domain.Models
 {
   public class PepperoniPizza : APizza
   {
+
     public PepperoniPizza()
     {
       Name = "Pepperoni Pizza";
     }
 
-    protected override void AddCrust()
+    protected void AddCrust()
     {
-      Crust = Crust.Medium;
+      Crust = _crustSingleton.Medium;
     }
 
-    protected override void AddToppings()
+    protected void AddToppings()
     {
       Toppings = new List<Topping>()
       {

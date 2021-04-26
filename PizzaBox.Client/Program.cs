@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
 using PizzaBox.Client.Singletons;
+using PizzaBox.Domain.Singletons;
 
 namespace PizzaBox.Client
 {
@@ -10,11 +11,14 @@ namespace PizzaBox.Client
   {
     private static readonly StoreSingleton _storeSingleton = StoreSingleton.Instance;
     private static readonly PizzaSingleton _pizzaSingleton = PizzaSingleton.Instance;
-    private static readonly CrustSingleton _crustSigleton = CrustSingleton.Instance;
+    private static readonly CrustSingleton _crustSingleton = CrustSingleton.Instance;
+    private static readonly SizeSingleton _sizeSingleton = SizeSingleton.Instance;
+    private static readonly ToppingSingleton _toppingSingleton = ToppingSingleton.Instance;
     private static void Main()
     {
       Run();
     }
+
     private static void Run()
     {
       var ss = StoreSingleton.Instance;
@@ -66,13 +70,6 @@ namespace PizzaBox.Client
         Console.WriteLine($"{x} {_pizzaSingleton.Pizzas[x]}");
       }
     }
-    private static void PrintCrustList()
-    {
-      for (var i = 1; i < _crustSigleton.Crusts.Count; i++)
-      {
-        System.Console.WriteLine($"{i} {_crustSigleton.Crusts[i]}");
-      }
-    }
     private static APizza selectPizza()
     {
       Console.WriteLine("--Choose a pizza--");
@@ -83,17 +80,26 @@ namespace PizzaBox.Client
     {
       Console.WriteLine("0 Present Pizza\n1 Custom Pizza");
       var entry = int.Parse(Console.ReadLine());
+      APizza pizza;
       switch (entry)
       {
-        case 1:
+        case 0:
           PrintPizzaList();
-          o.pizzas.Add(selectPizza());
+          pizza = selectPizza();
           break;
-        case 2:
-
-          o.pizzas.Add(new CustomPizza());
+        default:
+          Console.WriteLine("Choose a Crust");
+          PrintCrustList();
+          var crust = _crustSingleton.Crusts[int.Parse(Console.ReadLine())];
+          List<Topping> toppings = new List<Topping>();
+          AddToppings(toppings);
+          pizza = new CustomPizza(crust, toppings);
           break;
       }
+      Console.WriteLine("--Choose a Size--");
+      PrintSizeList();
+      pizza.Size = SelectSize();
+      o.pizzas.Add(pizza);
     }
     private static void RemovePizza(Order o)
     {
@@ -101,6 +107,43 @@ namespace PizzaBox.Client
       o.PrintOrderedPizzas();
       var entry = int.Parse(Console.ReadLine());
       o.pizzas.RemoveAt(entry);
+    }
+    public static void PrintCrustList()
+    {
+      for (int i = 1; i < _crustSingleton.Crusts.Count; i++)
+      {
+        System.Console.WriteLine($"{i} {_crustSingleton.Crusts[i]}");
+      }
+    }
+    private static void AddTopping(List<Topping> toppings)
+    {
+      Console.WriteLine("Add a topping");
+      PrintToppingList();
+      toppings.Add(toppings[int.Parse(Console.ReadLine())]);
+    }
+    protected static void AddToppings(List<Topping> toppings)
+    {
+      for (int i = 0; i < 2; i++)
+      {
+        AddTopping(toppings);
+      }
+      var input = "";
+      do
+      {
+        Console.WriteLine("Add another topping? Y/N");
+        input = Console.ReadLine();
+        if (input.Equals("Y"))
+        {
+          AddTopping(toppings);
+        }
+      } while (input.Equals("N") || toppings.Count > 4);
+    }
+    public static void PrintToppingList()
+    {
+      for (int i = 1; i < _toppingSingleton.Toppings.Count; i++)
+      {
+        System.Console.WriteLine($"{i} {_toppingSingleton.Toppings[i]}");
+      }
     }
     private static void viewOrder(Order o)
     {
@@ -126,6 +169,18 @@ namespace PizzaBox.Client
         }
       } while (input.Equals("N") || o.pizzas.Count >= 50);
       CheckoutOrder(o);
+    }
+    public static void PrintSizeList()
+    {
+      for (int i = 1; i < _sizeSingleton.Sizes.Count; i++)
+      {
+        System.Console.WriteLine($"{i} {_sizeSingleton.Sizes[i]}");
+      }
+    }
+    public static Size SelectSize()
+    {
+      var entry = int.Parse(Console.ReadLine());
+      return _sizeSingleton.Sizes[entry];
     }
     private static void CheckoutOrder(Order o)
     {

@@ -1,5 +1,5 @@
-using PizzaBox.Domain.Enums;
 using PizzaBox.Domain.Models;
+using PizzaBox.Domain.Singletons;
 using System.Collections.Generic;
 
 namespace PizzaBox.Domain.Abstracts
@@ -7,9 +7,10 @@ namespace PizzaBox.Domain.Abstracts
   public abstract class APizza : AModel
   {
     public string Name { get; set; }
-    protected Crust Crust;
-    protected Size Size;
-    protected List<Topping> Toppings;
+    public Crust Crust { get; set; }
+    public Size Size { get; set; }
+    public List<Topping> Toppings { get; set; }
+    protected static readonly CrustSingleton _crustSingleton = CrustSingleton.Instance;
     public float Price
     {
       get
@@ -19,17 +20,22 @@ namespace PizzaBox.Domain.Abstracts
     }
     public APizza()
     {
-      //CrustEnum = CrustEnum.ThickCrust;
       AddCrust();
-      AddSize();
+      AddSize(new Size("Medium", 1.0f));
       AddToppings();
     }
-    protected abstract void AddCrust();
-    protected void AddSize()
+    protected void AddCrust(Crust crust = null)
     {
-      Size = new Size("Medium", 1.0f);
+      Crust = crust ?? _crustSingleton.Crusts.Find(x => x.Name.Equals("Medium"));
     }
-    protected abstract void AddToppings();
+    private void AddSize(Size size = null)
+    {
+      Size = size ?? Size.Medium;
+    }
+    protected void AddToppings(List<Topping> toppings = null)
+    {
+      Toppings = toppings ?? new List<Topping>();
+    }
     public override string ToString()
     {
       return Name;

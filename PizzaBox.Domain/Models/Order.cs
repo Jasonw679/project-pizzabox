@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace PizzaBox.Domain.Models
 {
-  public class Order
+  public class Order : AModel
   {
-    public AStore store;
+    public AStore store { get; set; }
     public List<APizza> pizzas = new List<APizza>();
-    public Customer customer;
+    public Customer customer { get; set; }
     public override string ToString()
     {
       float price = 0.0f;
