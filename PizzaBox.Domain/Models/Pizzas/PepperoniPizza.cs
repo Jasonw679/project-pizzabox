@@ -20,7 +20,8 @@ namespace PizzaBox.Domain.Models
     {
       Toppings = new List<Topping>()
       {
-        _toppingSingleton.Pepperoni
+        _toppingSingleton.Pepperoni,
+        _toppingSingleton.TomatoSauce
       };
     }
   }

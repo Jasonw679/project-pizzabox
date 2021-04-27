@@ -13,7 +13,11 @@ namespace PizzaBox.Storing.Repository
     }
     public void Save(Order o)
     {
-      o.Store = _context.Stores.FirstOrDefault();
+      foreach (var p in o.pizzas)
+      {
+        p.Crust = _context.Pizzas.FirstOrDefault(Pizzas => Pizzas.Crust.Name.Equals(p.Crust.Name)).Crust;
+        p.Size = _context.Pizzas.FirstOrDefault(Pizzas => Pizzas.Size.Name.Equals(p.Size.Name)).Size;
+      }
       _context.Orders.Add(o);
       _context.SaveChanges();
     }

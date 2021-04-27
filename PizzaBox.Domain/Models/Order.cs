@@ -11,7 +11,7 @@ namespace PizzaBox.Domain.Models
     public long CustomerEntityId { get; set; }
     public override string ToString()
     {
-      float price = 0.0f;
+      double price = 0.0;
       string result = "";
       for (var i = 0; i < pizzas.Count; i += 1)
       {

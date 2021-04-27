@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
-using PizzaBox.Domain.Singletons;
 
 namespace PizzaBox.Storing
 {
@@ -13,8 +12,6 @@ namespace PizzaBox.Storing
     public DbSet<APizza> Pizzas { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Customer> Customers { get; set; }
-
-    private CrustSingleton crust = CrustSingleton.Instance;
 
     public PizzaBoxContext()
     {

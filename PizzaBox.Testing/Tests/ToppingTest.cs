@@ -17,7 +17,7 @@ namespace PizzaBox.Testing.Tests
     public void SingletonsTest()
     {
       var t = ToppingSingleton.Instance;
-      Assert.Equal(3, t.Toppings.Count);
+      Assert.Equal(5, t.Toppings.Count);
     }
   }
 }

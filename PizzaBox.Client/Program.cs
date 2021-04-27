@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
 using PizzaBox.Client.Singletons;
@@ -27,23 +28,23 @@ namespace PizzaBox.Client
     private static void Run()
     {
       Console.WriteLine("Welcome to Pizza Box");
-      placeOrder();
+      var order = new Order();
+      var customer = SelectCustomer();
+      order.Customer = customer;
+      placeOrder(order);
       var input = "";
       do
       {
-        Console.WriteLine("Would you like to make a new order?");
+        Console.WriteLine("Would you like to make a new order? Y/N");
         input = Console.ReadLine();
         if (input.Equals("Y"))
         {
-          placeOrder();
+          placeOrder(new Order() { Customer = customer });
         }
-      } while (input.Equals("N"));
+      } while (!input.Equals("N"));
     }
-    private static void placeOrder()
+    private static void placeOrder(Order order)
     {
-      var order = new Order();
-
-      order.Customer = SelectCustomer();
       order.Store = selectStore();
 
       AddPizza(order);
@@ -53,7 +54,7 @@ namespace PizzaBox.Client
     {
       Console.WriteLine("--input your name--");
       var name = Console.ReadLine();
-      var c = _customerSingleton.Customers.Find(s => s.Name != null && s.Name.Equals(name));
+      var c = _customerSingleton.Customers.FirstOrDefault(s => s.Name != null && s.Name.Equals(name));
       if (c == null)
       {
         c = new Customer() { Name = name };
@@ -154,14 +155,14 @@ namespace PizzaBox.Client
         {
           AddTopping(toppings);
         }
-      } while (input.Equals("N") || toppings.Count > 4);
+      } while (toppings.Count < 6 && !input.Equals("N"));
     }
     private static void viewOrder(Order o)
     {
-      Console.WriteLine($"Review your order\n {o}");
       var input = "";
       do
       {
+        Console.WriteLine($"Review your order\n {o}");
         Console.WriteLine("Do you want to add another pizza Y/N");
         input = Console.ReadLine();
         if (input.Equals("Y"))

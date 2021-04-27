@@ -22,8 +22,8 @@ namespace PizzaBox.Testing.Tests
     [Fact]
     public void Test_PizzaPrice()
     {
-      Assert.Equal(new CheesePizza().Price, 2.2);
-      Assert.Equal(new PepperoniPizza().Price, 2.25);
+      Assert.Equal(new CheesePizza().Price, 2.4);
+      Assert.Equal(new PepperoniPizza().Price, 2.45);
     }
   }
 }
