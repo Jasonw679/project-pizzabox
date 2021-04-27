@@ -6,18 +6,16 @@ namespace PizzaBox.Testing.Tests
 {
   public class CrustTests
   {
+    public Crust value = new Crust("Test", 1.0f);
     [Fact]
-    public void Test_Crust()
+    public void Test_Crust_Name()
     {
-      var value = new Crust("Test", 1.0f);
-      Assert.Equal("Test", value.Name);
-      Assert.Equal(1.0f, value.Price);
+      Assert.Equal("Test", value.ToString());
     }
     [Fact]
-    public void SingletonsTest()
+    public void Test_Crust_Price()
     {
-      var t = CrustSingleton.Instance;
-      Assert.Equal(3, t.Crusts.Count);
+      Assert.Equal(1.0f, value.Price);
     }
   }
 }

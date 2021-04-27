@@ -35,6 +35,18 @@ namespace PizzaBox.Client
       var input = "";
       do
       {
+        Console.WriteLine("--Your order history--");
+        foreach (var stores in _storeSingleton.Stores)
+        {
+          Console.WriteLine(stores.Name + ":");
+          foreach (var s in _storeSingleton.ViewOrders(stores))
+          {
+            foreach (var o in s.Orders)
+            {
+              Console.WriteLine($" {o}");
+            }
+          }
+        }
         Console.WriteLine("Would you like to make a new order? Y/N");
         input = Console.ReadLine();
         if (input.Equals("Y"))

@@ -6,18 +6,15 @@ namespace PizzaBox.Testing.Tests
 {
   public class ToppingTests
   {
+    private Topping value = new Topping("Test", 1.2f);
     [Fact]
-    public void Test_Topping()
+    public void Test_Topping_Name()
     {
-      var value = new Topping("Test", 1.2f);
-      Assert.Equal("Test", value.Name);
-      Assert.Equal(1.2f, value.Price);
+      Assert.Equal("Test", value.ToString());
     }
-    [Fact]
-    public void SingletonsTest()
+    public void Test_Topping_Price()
     {
-      var t = ToppingSingleton.Instance;
-      Assert.Equal(5, t.Toppings.Count);
+      Assert.Equal(1.2f, value.Price);
     }
   }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
 using PizzaBox.Storing;
@@ -33,9 +34,10 @@ namespace PizzaBox.Client.Singletons
         Stores = _context.Stores.ToList();
       }
     }
-    //public IEnumerable<Order> ViewOrders(AStore store)
-    //{
-    //var orders = _context.Stores.Includes(s => Order >.Where(s => s.Name == store.Name);
-    //}
+    public IEnumerable<AStore> ViewOrders(AStore store)
+    {
+      var orders = _context.Stores.Include(s => s.Orders).ThenInclude(o => o.pizzas).Where(s => s.Name == store.Name);
+      return orders.ToList();
+    }
   }
 }

@@ -19,5 +19,9 @@ namespace PizzaBox.Testing.Tests
       Assert.NotNull(store.Name);
       Assert.Equal(store.Name, store.ToString());
     }
+    public void Test_StoreOrder(AStore store)
+    {
+      Assert.NotNull(store.Orders);
+    }
   }
 }

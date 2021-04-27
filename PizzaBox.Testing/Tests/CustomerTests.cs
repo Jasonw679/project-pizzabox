@@ -18,5 +18,11 @@ namespace PizzaBox.Testing.Tests
       Assert.NotNull(customer.Name);
       Assert.Equal(customer.Name, customer.ToString());
     }
+    [Theory]
+    [MemberData(nameof(values))]
+    public void Test_Order(Customer customer)
+    {
+      Assert.NotNull(customer.orders);
+    }
   }
 }

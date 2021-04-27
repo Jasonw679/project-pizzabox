@@ -6,18 +6,16 @@ namespace PizzaBox.Testing.Tests
 {
   public class SizeTests
   {
+    private Size value = new Size("Test", 1.0f);
     [Fact]
     public void Test_Size()
     {
-      var value = new Size("Test", 1.0f);
-      Assert.Equal("Test", value.Name);
-      Assert.Equal(1.0f, value.Price);
+      Assert.Equal("Test", value.ToString());
     }
     [Fact]
-    public void SingletonsTest()
+    public void Test_Price()
     {
-      var t = SizeSingleton.Instance;
-      Assert.Equal(3, t.Sizes.Count);
+      Assert.Equal(1.0f, value.Price);
     }
   }
 }

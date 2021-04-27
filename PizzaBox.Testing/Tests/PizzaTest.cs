@@ -16,7 +16,6 @@ namespace PizzaBox.Testing.Tests
     [MemberData(nameof(values))]
     public void Test_PizzaName(APizza pizza)
     {
-      Assert.NotNull(pizza.Name);
       Assert.Equal(pizza.Name, pizza.ToString());
     }
     [Fact]
