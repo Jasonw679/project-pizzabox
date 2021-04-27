@@ -5,19 +5,18 @@ using Xunit;
 
 namespace PizzaBox.Testing.Tests
 {
-  public class StoreTests
+  public class CustomersTests
   {
     public static IEnumerable<object[]> values = new List<object[]>()
         {
-            new object[] { new JayPizza() },
-            new object[] { new Pizzaria() }
+            new object[] { new Customer(){Name = "Test"} },
         };
     [Theory]
     [MemberData(nameof(values))]
-    public void Test_StoreName(AStore store)
+    public void Test_CustomersName(Customer customer)
     {
-      Assert.NotNull(store.Name);
-      Assert.Equal(store.Name, store.ToString());
+      Assert.NotNull(customer.Name);
+      Assert.Equal(customer.Name, customer.ToString());
     }
   }
 }

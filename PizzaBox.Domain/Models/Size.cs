@@ -6,7 +6,6 @@ namespace PizzaBox.Domain.Models
   public class Size : AModel
   {
     public ICollection<APizza> Pizzas { get; set; }
-    public static readonly Size Medium = new Size("Medium", 1.0f);
     public Size(string Name, float Price)
     {
       this.Name = Name;

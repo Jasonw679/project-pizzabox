@@ -5,14 +5,15 @@ namespace PizzaBox.Domain.Models
 {
   public class Order : AModel
   {
-    public AStore store { get; set; }
+    public AStore Store { get; set; }
     public List<APizza> pizzas = new List<APizza>();
-    public Customer customer { get; set; }
+    public Customer Customer { get; set; }
+    public long CustomerEntityId { get; set; }
     public override string ToString()
     {
       float price = 0.0f;
       string result = "";
-      for (int i = 0; i < pizzas.Count; i += 1)
+      for (var i = 0; i < pizzas.Count; i += 1)
       {
         if (i > 0)
         {
@@ -22,10 +23,15 @@ namespace PizzaBox.Domain.Models
         {
           result += "and ";
         }
-        result += pizzas[i];
+        result += pizzas[i] + $" in {pizzas[i].Crust} crust with";
+        foreach (var top in pizzas[i].Toppings)
+        {
+          result += $" {top}";
+        }
+        result += "\n";
         price += pizzas[i].Price;
       }
-      return $"{result} order in {store}, Final Price: {price}";
+      return $"{result} order in {Store}, Final Price: {price}";
     }
     public void PrintOrderedPizzas()
     {

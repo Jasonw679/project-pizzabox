@@ -11,16 +11,16 @@ namespace PizzaBox.Domain.Models
       Name = "Pepperoni Pizza";
     }
 
-    protected void AddCrust()
+    protected override void AddCrust()
     {
       Crust = _crustSingleton.Medium;
     }
 
-    protected void AddToppings()
+    protected override void AddToppings()
     {
       Toppings = new List<Topping>()
       {
-        Topping.Pepperoni
+        _toppingSingleton.Pepperoni
       };
     }
   }

@@ -10,7 +10,10 @@ namespace PizzaBox.Domain.Abstracts
     public Crust Crust { get; set; }
     public Size Size { get; set; }
     public List<Topping> Toppings { get; set; }
+    public List<Order> Order { get; set; }
     protected static readonly CrustSingleton _crustSingleton = CrustSingleton.Instance;
+    protected static readonly SizeSingleton _sizeSingleton = SizeSingleton.Instance;
+    protected static readonly ToppingSingleton _toppingSingleton = ToppingSingleton.Instance;
     public float Price
     {
       get
@@ -21,21 +24,15 @@ namespace PizzaBox.Domain.Abstracts
     public APizza()
     {
       AddCrust();
-      AddSize(new Size("Medium", 1.0f));
+      AddSize();
       AddToppings();
     }
-    protected void AddCrust(Crust crust = null)
-    {
-      Crust = crust ?? _crustSingleton.Crusts.Find(x => x.Name.Equals("Medium"));
-    }
+    protected abstract void AddCrust();
     private void AddSize(Size size = null)
     {
-      Size = size ?? Size.Medium;
+      Size = size ?? _sizeSingleton.Sizes[1];
     }
-    protected void AddToppings(List<Topping> toppings = null)
-    {
-      Toppings = toppings ?? new List<Topping>();
-    }
+    protected abstract void AddToppings();
     public override string ToString()
     {
       return Name;

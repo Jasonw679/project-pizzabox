@@ -12,6 +12,7 @@ namespace PizzaBox.Storing
     public DbSet<AStore> Stores { get; set; }
     public DbSet<APizza> Pizzas { get; set; }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<Customer> Customers { get; set; }
 
     private CrustSingleton crust = CrustSingleton.Instance;
 
@@ -37,15 +38,19 @@ namespace PizzaBox.Storing
       builder.Entity<Size>().HasKey(e => e.EntityId);
       builder.Entity<Topping>().HasKey(e => e.EntityId);
 
-      builder.Entity<Crust>().HasMany<APizza>().WithOne();
-      builder.Entity<APizza>().HasOne<Crust>().WithMany();
+      builder.Entity<APizza>().HasOne<Crust>(s => s.Crust).WithMany(s => s.Pizzas);
 
-      builder.Entity<Size>().HasMany<APizza>().WithOne();
-      builder.Entity<APizza>().HasOne<Size>().WithMany();
+      builder.Entity<APizza>().HasOne<Size>(s => s.Size).WithMany(s => s.Pizzas);
 
-      //builder.Entity<APizza>().HasMany<Topping>().WithMany(s => s.Pizzas);
-      //builder.Entity<Topping>().HasMany<APizza>().WithMany(s => s.Toppings);
+      builder.Entity<APizza>().HasMany<Topping>(s => s.Toppings).WithMany(s => s.Pizzas);
+      builder.Entity<Topping>().HasMany<APizza>(s => s.Pizzas).WithMany(s => s.Toppings);
 
+      builder.Entity<AStore>().HasMany<Order>(s => s.Orders).WithOne(o => o.Store);
+
+      builder.Entity<APizza>().HasMany<Order>(s => s.Order).WithMany(s => s.pizzas);
+      builder.Entity<Order>().HasMany<APizza>(s => s.pizzas).WithMany(s => s.Order);
+
+      builder.Entity<Customer>().HasMany<Order>(s => s.orders).WithOne(s => s.Customer);
 
       OnDataSeeding(builder);
     }
@@ -61,15 +66,15 @@ namespace PizzaBox.Storing
         new Pizzaria() {EntityId = 2}
       });
 
-      builder.Entity<CheesePizza>().HasData(new CheesePizza[]
-      {
-        new CheesePizza() {EntityId = 1, Crust = crust.Medium}
-      });
+      //builder.Entity<CheesePizza>().HasData(new CheesePizza[]
+      //{
+      //new CheesePizza() {EntityId = 1, Crust = crust.Medium}
+      //});
 
-      builder.Entity<PepperoniPizza>().HasData(new PepperoniPizza[]
-      {
-        new PepperoniPizza() {EntityId = 2, Crust = crust.Medium}
-      });
+      //builder.Entity<PepperoniPizza>().HasData(new PepperoniPizza[]
+      //{
+      //new PepperoniPizza() {EntityId = 2, Crust = crust.Medium}
+      //});
     }
   }
 }

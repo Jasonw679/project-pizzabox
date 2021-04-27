@@ -9,9 +9,17 @@ namespace PizzaBox.Domain.Models
   {
     public CustomPizza(Crust crust, List<Topping> toppings)
     {
-      AddCrust(crust);
+      Crust = crust;
       Toppings = toppings;
       Name = "Custom Pizza";
+    }
+    protected override void AddCrust()
+    {
+
+    }
+    protected override void AddToppings()
+    {
+
     }
   }
 }

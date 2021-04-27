@@ -9,27 +9,24 @@ namespace PizzaBox.Client.Singletons
   public class PizzaSingleton
   {
     public List<APizza> Pizzas { get; set; }
-    private readonly PizzaBoxContext _context = new PizzaBoxContext();
     private static readonly PizzaSingleton _instance;
-    public static PizzaSingleton Instance
+    public static PizzaSingleton Instance(PizzaBoxContext context)
     {
-      get
+      if (_instance == null)
       {
-        if (_instance == null)
-        {
-          return new PizzaSingleton();
-        }
-        return _instance;
+        return new PizzaSingleton(context);
       }
+      return _instance;
     }
-    private PizzaSingleton()
+    private PizzaSingleton(PizzaBoxContext context)
     {
-      if (Pizzas == null)
+      Pizzas = context.Pizzas.ToList();
+      if (Pizzas.Count == 0)
       {
-        _context.Pizzas.Add(new CheesePizza());
-        _context.Pizzas.Add(new PepperoniPizza());
-        // _context.SaveChanges();
-        Pizzas = _context.Pizzas.ToList();
+        context.Pizzas.Add(new CheesePizza());
+        context.Pizzas.Add(new PepperoniPizza());
+        context.SaveChanges();
+        Pizzas = context.Pizzas.ToList();
       }
     }
   }
